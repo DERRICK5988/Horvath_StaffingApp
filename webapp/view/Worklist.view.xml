@@ -1,0 +1,93 @@
+<mvc:View controllerName="horvath.staffingapp.controller.Worklist"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core" height="100%">
+    <uxap:ObjectPageLayout id="idWorkList" toggleHeaderOnTitleClick="true" preserveHeaderStateOnScroll="false" headerContentPinnable="false" showFooter="{app>/IsEditMode}">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:heading>
+                    <!-- <mvc:XMLView id="idVariantManagement" viewName="horvath.staffingapp.variant.Variant"/> -->
+                </uxap:heading>
+                <uxap:actions>
+                    <l:VerticalLayout width="100px">
+                        <SegmentedButton selectedKey="{app>/selectedView}">
+                            <items>
+                                <SegmentedButtonItem text="Hour" key="Hour"/>
+                                <SegmentedButtonItem text="Day"/>
+                            </items>
+                        </SegmentedButton>
+                    </l:VerticalLayout>
+                    <Button icon="sap-icon://search" tooltip="{i18n>Search}" type="Emphasized" press="onSearch"></Button>
+                    <Button icon="sap-icon://refresh" tooltip="Refresh" press="onRefresh"></Button>
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+        <uxap:headerContent>
+            <mvc:XMLView id="idHeader" viewName="horvath.staffingapp.view.Header"/>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection showTitle="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection class="sapUxAPObjectPageSubSectionFitContainer">
+                        <l:DynamicSideContent id="DynamicSideContent" sideContentFallDown="BelowM" sideContentPosition="Begin" containerQuery="true" breakpointChanged="onBreakpointChanged" showSideContent="{app>/IsFilterBarOpen}">
+                            <l:mainContent>
+                                <mvc:XMLView id="idTable" viewName="horvath.staffingapp.view.Table"/>
+                            </l:mainContent>
+                            <l:sideContent backgroundDesign="Solid">
+                                <!-- <mvc:XMLView id="idVerticalFilter" viewName="capacityGridUi.capacityGridUi.view.filter.VerticalFilter"/> -->
+                            </l:sideContent>
+                        </l:DynamicSideContent>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>
+
+<!-- <mvc:View controllerName="capacityGridUi.capacityGridUi.view.Page" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns:l="sap.ui.layout" xmlns:m="sap.m" busyIndicatorDelay="{app>/busyIndicatorDelay}" displayBlock="true" height="100%" width="100%" class="capacityGridUi">
+	<m:App id="app">
+		<uxap:ObjectPageLayout id="idPage" toggleHeaderOnTitleClick="true" preserveHeaderStateOnScroll="false" headerContentPinnable="false" showFooter="{app>/IsEditMode}">
+			<uxap:headerTitle>
+				<uxap:ObjectPageDynamicHeaderTitle>
+					<uxap:heading>
+						<mvc:XMLView id="idVariantManagement" viewName="capacityGridUi.capacityGridUi.view.variant.Variant"/>
+					</uxap:heading>
+				</uxap:ObjectPageDynamicHeaderTitle>
+			</uxap:headerTitle>
+			<uxap:headerContent>
+				<mvc:XMLView id="idHeader" viewName="capacityGridUi.capacityGridUi.view.header.Header"/>
+			</uxap:headerContent>
+			<uxap:sections>
+				<uxap:ObjectPageSection showTitle="false">
+					<uxap:subSections>
+						<uxap:ObjectPageSubSection class="sapUxAPObjectPageSubSectionFitContainer">
+							<l:DynamicSideContent id="DynamicSideContent" sideContentFallDown="BelowM" sideContentPosition="Begin" containerQuery="true" breakpointChanged="onBreakpointChanged" showSideContent="{app>/IsFilterBarOpen}">
+								<l:mainContent>
+									<mvc:XMLView id="idTable" viewName="capacityGridUi.capacityGridUi.view.table.Table"/>
+								</l:mainContent>
+								<l:sideContent backgroundDesign="Solid">
+									<mvc:XMLView id="idVerticalFilter" viewName="capacityGridUi.capacityGridUi.view.filter.VerticalFilter"/>
+								</l:sideContent>
+							</l:DynamicSideContent>
+						</uxap:ObjectPageSubSection>
+					</uxap:subSections>
+				</uxap:ObjectPageSection>
+			</uxap:sections>
+			<uxap:footer>
+				<m:OverflowToolbar id="idEditFooter">
+					<m:Button id="messagePopoverBtn" visible="{=!!${message>/}.length}" icon="sap-icon://message-error" type="Negative" text="{= ${message>/}.length}" press=".onOpenMessagePopover" ariaHasPopup="Dialog"/>
+					<m:ToolbarSeparator/>
+					<m:Text id="idEditMessageStrip" visible="false" text="Default (Information) with default icon and close button:"/>
+					<m:ToolbarSpacer/>
+					<m:Text id="idSubmitStatusText" visible="false"/>
+					<m:Button id="idSaveButton" type="Emphasized" text="{i18n>SAVE_BUTTON}" press=".onEditSave"/>
+					<m:Button id="idCancelButton" type="Transparent" text="{i18n>CANCEL_BUTTON}" press=".onCancel"/>
+				</m:OverflowToolbar>
+			</uxap:footer>
+		</uxap:ObjectPageLayout>
+	</m:App>
+</mvc:View>' -->

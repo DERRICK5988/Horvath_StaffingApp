@@ -1,0 +1,50 @@
+<mvc:View controllerName="horvath.staffingapp.controller.Header"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <!-- <l:VerticalLayout class="sapUiSmallMarginBeginEnd" width="14rem">
+		<m:Label id="idViewLabel" text="{i18n>VIEW}" labelFor="idViewButton"/>
+		<m:SegmentedButton id="idViewButton" selectedKey="{app>/selectedView}" selectionChange=".onViewSelectChange" items="{header>/Views}" twidth="100%" tenabled="{app>/IsDisplayMode}"><m:items>
+				<m:SegmentedButtonItem text="{header>Text}" key="{header>Key}"/>
+			</m:items>
+		</m:SegmentedButton>
+	</l:VerticalLayout>
+	<l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+		<m:Label id="idTimeFrame" text="{i18n>TIME_PERIOD}" labelFor="dateRangeInput"/>
+		<m:Input id="dateRangeInput" showValueHelp="true" valueHelpOnly="true" valueHelpRequest=".onDateRangeValueHelp" value="{ t\tparts: [ \'date> view\', \'date> timePeriodKey\', \'date> sFromDate\', \'date> sEndDate\' ], t\tformatter: \'.formatTimePeriodText\' t}" tvalueState="{date>/sDateRangeEmptyState}" tvalueStateText="{date>/sDateRangeEmptyText}" tenabled="{app>/IsDisplayMode}"/>
+	</l:VerticalLayout>
+	<l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+		<m:Label id="idAvgUtilHLabel" text="{i18n>AVERAGE_UTILIZATION}"  t class="sapUiSmallMarginRight" labelFor="idAvgUtilizationStatus"/>
+		<m:ObjectStatus id="idAvgUtilizationStatus" class="capacityGridUiHeaderStatus" busy="{header>/kpisBusy}" busyIndicatorDelay="{app>/busyIndicatorDelay}" tinverted="true" tstate="{tpath: \'header>/avgUtilization\',tformatter: \'.formatUtilizationPercentState\'t}" ttext="{header>/avgUtilization}%"/>
+	</l:VerticalLayout>
+	<l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+		<m:Label id="idTotalResourcesLabel" text="{i18n>TOTAL_RESOURCES}"/>
+		<m:VBox>
+			<m:ObjectNumber id="idTotalResources" class="sapMObjectNumberLarge" busy="{header>/kpisBusy}" busyIndicatorDelay="{app>/busyIndicatorDelay}" tnumber="{header>/totalResources}" temphasized="true" tstate="None"/>
+		</m:VBox>
+	</l:VerticalLayout>
+	<l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+		<m:Label id="idheaderFreeResLabel" text="{i18n>FREE_RESOURCES}"/>
+		<m:VBox alignContent="Stretch">
+			<m:ObjectNumber id="idheaderFreeRes" tclass="sapMObjectNumberLarge" tbusy="{header>/kpisBusy}" tbusyIndicatorDelay="{app>/busyIndicatorDelay}" tnumber="{header>/freeResources}" temphasized="true" tstate="None"/>
+		</m:VBox>
+	</l:VerticalLayout>
+	<l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+		<m:Label id="idheaderOBResLabel" text="{i18n>OVERBOOKED_RESOURCES}"/>
+		<m:VBox>
+			<m:ObjectNumber id="idheaderOBRes" tclass="sapMObjectNumberLarge" tbusy="{header>/kpisBusy}" tbusyIndicatorDelay="{app>/busyIndicatorDelay}" tnumber="{header>/overbookedResources}" temphasized="true" tstate="None"/>
+		</m:VBox>
+	</l:VerticalLayout> -->
+    <l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+        <Label id="idProjectLabel" text="{i18n>Project}"/>
+        <!-- <MultiInput id="idProject" name="project" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onValueHelpRequested" showClearIcon="true" maxTokens="10"/> -->
+        <!-- <MultiComboBox id="idProject" name="Project" showSecondaryValues="true" width="300px" items="{ path: '/ProjectSet', sorter: { path: 'ProjectID' }, templateShareable: false }" valueState="{Worklist>/ProjectState}" valueStateText="{Worklist>/ProjectStateText}">
+                    <core:ListItem key="{ProjectID}" text="{ProjectName}"/>
+                </MultiComboBox> -->
+    </l:VerticalLayout>
+    <l:VerticalLayout class="sapUiSmallMarginBeginEnd">
+        <Label text="Project Date" labelFor="dateRangeInput"/>
+        <DateRangeSelection id="idProjectDate" showCurrentDateButton="true" showFooter="true" enabled="false" valueState="{Worklist>/DateState}" valueStateText="{Worklist>/DateStateText}"/>
+    </l:VerticalLayout>
+</mvc:View>
