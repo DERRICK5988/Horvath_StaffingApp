@@ -104,6 +104,8 @@
                 <Property Name="UnitId" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Resource ID" sap:updatable="false"/>
                 <Property Name="CreatedOn" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Created On" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="ChangedOn" Type="Edm.DateTimeOffset" Precision="7" sap:unicode="false" sap:label="Changed On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="YY1_HierarchyLevel_cpd" Type="Edm.Decimal" Precision="10" Scale="0" sap:field-control="YY1_HierarchyLevel_cpdF" sap:label="Hierarchy Level" sap:filterable="false" sap:is-extension-field="true"/>
+                <Property Name="YY1_HierarchyLevel_cpdF" Type="Edm.Byte" sap:visible="false" sap:label="UI Field Control" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:is-extension-field="true"/>
                 <Property Name="YY1_MinimalTime_cpd" Type="Edm.Boolean" sap:display-format="UpperCase" sap:field-control="YY1_MinimalTime_cpdF" sap:label="MinimalTime" sap:filterable="false" sap:is-extension-field="true"/>
                 <Property Name="YY1_MinimalTime_cpdF" Type="Edm.Byte" sap:visible="false" sap:label="UI Field Control" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:is-extension-field="true"/>
                 <NavigationProperty Name="to_ResourceDemand" Relationship="CPD.SC_PROJ_ENGMT_CREATE_UPD_SRV.ToResourceDemand" FromRole="FromRole_ToResourceDemand" ToRole="ToRole_ToResourceDemand"/>
@@ -1075,6 +1077,9 @@
                 <Annotation Term="com.sap.vocabularies.UI.v1.Hidden"/>
             </Annotations>
             <Annotations Target="/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV.Project/YY1_VertrMindestabrech_CprF" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="com.sap.vocabularies.UI.v1.Hidden"/>
+            </Annotations>
+            <Annotations Target="/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV.WorkPackage/YY1_HierarchyLevel_cpdF" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="com.sap.vocabularies.UI.v1.Hidden"/>
             </Annotations>
             <Annotations Target="/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV.WorkPackage/YY1_MinimalTime_cpdF" xmlns="http://docs.oasis-open.org/odata/ns/edm">

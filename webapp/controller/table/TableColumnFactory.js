@@ -215,7 +215,6 @@ sap.ui.define([
             //     })
             // },
             createTimeColumn: function (t, e, i) {
-                debugger;
                 return this._createColumn({
                     template: this.createTimeTemplate(e),
                     id: "idMonthColumn" + e,
@@ -269,7 +268,7 @@ sap.ui.define([
                 // });
                 // return a.bindContext("utilization/" + t),
                 // a
-                debugger;
+
                 let a = new d({
                     content: [new ObjectStatus({
                         text: "{colUtil} {i18n>PERCENTAGE}",
@@ -308,7 +307,7 @@ sap.ui.define([
                 return a.bindContext("" + t);
             },
             _createColumn: function (t) {
-                debugger;
+                
                 return new f({
                     label: new Label({
                         text: t.label,

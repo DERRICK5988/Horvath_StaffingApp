@@ -11,11 +11,12 @@ sap.ui.define([
                 sortOrder: null,
                 // resources: [],
                 // resourcesCount: 0,
+                btnVisible: true,
                 rows: [],
-                rowsSelected: !1,
+                rowsSelected: true,
                 columns: [],
-                busy: !1,
-                resetBusyOnRowUpdated: !1
+                busy: false,
+                resetBusyOnRowUpdated: true
             });
             this.oBundle = e;
         },

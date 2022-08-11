@@ -1,19 +1,189 @@
+/* eslint-disable valid-jsdoc */
+/* eslint-disable @sap/ui5-jsdocs/no-jsdoc */
 sap.ui.define([
     "horvath/staffingapp/base/BaseViewController",
-    // "/home/user/projects/staffingapp/webapp/base/BaseViewController",
-    "horvath/staffingapp/model/HeaderModel"
-], (function(BaseViewController, HeaderModel) {
+    "sap/ui/model/json/JSONModel",
+    "horvath/staffingapp/model/HeaderModel",
+    "sap/ui/core/Fragment",
+    "sap/ui/comp/filterbar/FilterBar",
+    "sap/ui/comp/filterbar/FilterGroupItem",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/SearchField",
+    "sap/m/ColumnListItem",
+    "sap/m/Label",
+    "sap/m/Token",
+    "sap/m/Input",
+    "sap/m/StandardListItem",
+    "sap/ui/model/type/String"
+], (function (BaseViewController, JSONModel, HeaderModel, Fragment, FilterBar, FilterGroupItem, Filter, FilterOperator,
+    SearchField, ColumnListItem, Label, Token, Input, StandardListItem, String) {
     "use strict";
     return BaseViewController.extend("horvath.staffingapp.controller.Header", {
         // oDateRangePopoverController: void 0,
-        onInit: function() {
-            debugger;
-            
+        onInit: function () {
+            let oProjectDate = this.getView().byId("idProjectDate"),
+                preMth = new Date(new Date().setMonth(new Date().getMonth() - 1)),
+                pMth = new Date(new Date().setMonth(new Date().getMonth() - 1)),
+                nMth = new Date(pMth.setMonth(pMth.getMonth() + 3));
             this.injectMembers();
             this.oComponent.oControllers.add("header", this);
             this.oHeaderModel = new HeaderModel(this.oBundle);
             this.getView().setModel(this.oHeaderModel, "header");
-        }
+            oProjectDate.setDateValue(preMth);
+            oProjectDate.setSecondDateValue(nMth);
+        },
+        onValueHelpRequested: function (oEvent, skey) {
+            debugger;
+            var oValueHelpModel = this.oComponent.oControllers.header.oHeaderModel.ValueHelpconfig()[skey],
+                aCols = oValueHelpModel.aCols;
+            this._oInput = oEvent.getSource();
+            Fragment.load({
+                name: [this.oBundle.getText("fragmentPath"), "ValueHelpDialog"].join(""),
+                controller: this
+            }).then(function name(oFragment) {
+                this.oValueHelpDialogue = oFragment;
+                this.getView().addDependent(this.oValueHelpDialogue);
+                this.oValueHelpDialogue.setTitle(oValueHelpModel.sTitle);
+                this.oValueHelpDialogue.setKey("Code");
+                this.oValueHelpDialogue.setDescriptionKey("Description");
+                this.oValueHelpDialogue.setSupportMultiselect(true);
+                this.oValueHelpDialogue.setFilterBar(
+                    new FilterBar({
+                        advancedMode: false,
+                        filterBarExpanded: true,
+                        search: this._onFilterBarSearch.bind(this),
+                        isRunningInValueHelpDialog: true,
+                        showFilterConfiguration: false,
+                        filterGroupItems: aCols.map(function (oColumn) {
+                            return new FilterGroupItem({
+                                groupName: "__$INTERNAL$",
+                                name: oColumn.name,
+                                label: oColumn.label,
+                                visibleInFilterBar: true,
+                                control: new Input({
+                                    name: oColumn.name
+                                })
+                            });
+                        }),
+                        basicSearch: new SearchField({
+                            showSearchButton: true,
+                            width: "77%",
+                            search: this._onFilterBarSearch.bind(this)
+                        })
+                    })
+                );
+                //     if (oSetValConfig.bSupRange) {
+                //         this.oValueHelpDialogue.setSupportRanges(oSetValConfig.bSupRange);
+                //         this.oValueHelpDialogue.setRangeKeyFields([{
+                //             label: "Code",
+                //             key: "code",
+                //             type: "string"
+                //         }]);
+                //         this.oValueHelpDialogue.setIncludeRangeOperations([ValueHelpRangeOperation.EQ], "string");
+                //     }
+                var oBindingInfo = {
+                    path: oValueHelpModel.EntitySet,
+                    filters: [],
+                    suspended: oValueHelpModel.bSuspend
+                },
+                    aFilters = [];
+                if (aFilters.length > 0) {
+                    oBindingInfo.filters.push(new Filter({
+                        filters: aFilters,
+                        and: oValueHelpModel.bAnd
+                    }));
+                }
+                this.oValueHelpDialogue.getTableAsync().then(function (oTable) {
+                    oTable.setEnableSelectAll(false);
+                    oTable.setModel(new JSONModel({
+                        cols: aCols
+                    }), "columns");
+                    if (oTable.bindRows) {
+                        oTable.bindAggregation("rows", oBindingInfo);
+                    }
+                    if (oTable.bindItems) {
+                        oTable.bindAggregation("items", oBindingInfo, function () {
+                            return new ColumnListItem({
+                                cells: aCols.map(function (column) {
+                                    return new Label({
+                                        text: "{" + column.template + "}"
+                                    });
+                                })
+                            });
+                        });
+                    }
+                    this.oValueHelpDialogue.update();
+                }.bind(this));
+                this.oValueHelpDialogue.open();
+            }.bind(this));
+        },
+
+        /**
+		 * Trigger from onValueHelpRequested event
+		 * @private
+		 */
+        _onFilterBarSearch: function () {
+            var oFilterBar = this.oValueHelpDialogue.getFilterBar();
+            var sSearchQuery = oFilterBar.getBasicSearchValue();
+            var aFilterItems = oFilterBar.getFilterGroupItems();
+            var aBasicFilters = [];
+            var aFilters = [];
+            aFilterItems.map(function (oItem) {
+                if (sSearchQuery) {
+                    aBasicFilters.push(
+                        new Filter(oItem.getName(), FilterOperator.Contains, sSearchQuery)
+                    );
+                }
+                if (oItem.getControl().getValue()) {
+                    aFilters.push(
+                        new Filter(oItem.getName(), (oItem.getControl().getProperty("name") === "Code" ? FilterOperator.EQ : FilterOperator.Contains),
+                            oItem.getControl().getValue()
+                        )
+                    );
+                }
+            });
+            if (aBasicFilters.length > 0) {
+                aFilters.push(
+                    new Filter({
+                        filters: aBasicFilters,
+                        and: false
+                    })
+                );
+            }
+            this.oValueHelpDialogue.getTableAsync().then(function (oTable) {
+                if (oTable.getBinding("items")) {
+                    oTable.getBinding("items").filter(aFilters);
+                    if (oTable.getBinding("items").bSuspended) {
+                        oTable.getBinding("items").resume();
+                    }
+                } else {
+                    oTable.getBinding("rows").filter(aFilters);
+                    if (oTable.getBinding("rows").bSuspended) {
+                        oTable.getBinding("rows").resume();
+                    }
+                }
+            });
+        },
+        onValueHelpOkPress: function (oEvent) {
+            var aTokens = oEvent.getParameter("tokens");
+            if (aTokens.length > 0) {
+                this._oInput.setTokens(aTokens);
+            }
+            oEvent.getSource().close();
+        },
+        onValueHelpCancelPress: function (oEvent) {
+            oEvent.getSource().close();
+        },
+
+        /**
+		 * Event handler when press cancel button for value help
+		 * @public
+		 */
+        onValueHelpAfterClose: function (oEvent) {
+            oEvent.getSource().close();
+        },
+
         // applyVariant: function(e) {
         //     if (this.models.app.setProperty("/selectedView", e.view),
         //     this.models.date.setDataByView(e.view),
@@ -97,4 +267,3 @@ sap.ui.define([
     });
 }
 ));
-//# sourceURL=https://cprtrialprod.res.projectscloud.cfapps.eu10.hana.ondemand.com/cp.portal/%3Cunknown%3E/capacityGridUi/capacityGridUi/view/header/Header.controller.js?eval

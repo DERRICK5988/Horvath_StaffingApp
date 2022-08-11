@@ -45,7 +45,7 @@ sap.ui.define([
             this.createMonthly(t, e, k, i);
         }
         createMonthly(t, e, r, s) {
-            debugger;
+            
             let yrMth,
                 n = new Date(e, t - 1),
                 g = 12 * (s - e) + (r - t) + 1;
