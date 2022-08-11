@@ -18,6 +18,7 @@ sap.ui.define([
             // @ts-ignore
             this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
             this._oComponent = oComponent;
+            debugger;
             this._oModel = oComponent.getModel();
             // @ts-ignore
             this._oModel.metadataLoaded().then(this._onMetadataLoaded.bind(this));
@@ -30,7 +31,8 @@ sap.ui.define([
 		 */
         // @ts-ignore
         _onMetadataLoaded: function (oEvent) {
-            this._oComponent.setModel(this._oModel.getServiceMetadata().dataServices.schema[0].entityType, "entitytype");
+            
+            // this._oComponent.setModel(this._oModel.getServiceMetadata().dataServices.schema[0].entityType, "entitytype");
             // this._oComponent.setModel(new JSONModel({}), "Worklist");
             this._oComponent.setModel(new JSONModel({}), "Settings");
         }

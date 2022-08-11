@@ -2,6 +2,9 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:l="sap.ui.layout"
     xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:sv="sap.ui.comp.smartvariants"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:core="sap.ui.core">
     <!-- <l:VerticalLayout class="sapUiSmallMarginBeginEnd" width="14rem">
 		<m:Label id="idViewLabel" text="{i18n>VIEW}" labelFor="idViewButton"/>
@@ -38,13 +41,35 @@
 	</l:VerticalLayout> -->
     <l:VerticalLayout class="sapUiSmallMarginBeginEnd">
         <Label id="idProjectLabel" text="{i18n>Project}"/>
-        <!-- <MultiInput id="idProject" name="project" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onValueHelpRequested" showClearIcon="true" maxTokens="10"/> -->
-        <!-- <MultiComboBox id="idProject" name="Project" showSecondaryValues="true" width="300px" items="{ path: '/ProjectSet', sorter: { path: 'ProjectID' }, templateShareable: false }" valueState="{Worklist>/ProjectState}" valueStateText="{Worklist>/ProjectStateText}">
-                    <core:ListItem key="{ProjectID}" text="{ProjectName}"/>
-                </MultiComboBox> -->
+        <MultiInput id="idProject" key="Project" name="Project" width="230px" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onValueHelpRequested($event, 'Project')" showClearIcon="true" maxTokens="10"/>
     </l:VerticalLayout>
     <l:VerticalLayout class="sapUiSmallMarginBeginEnd">
         <Label text="Project Date" labelFor="dateRangeInput"/>
-        <DateRangeSelection id="idProjectDate" showCurrentDateButton="true" showFooter="true" enabled="false" valueState="{Worklist>/DateState}" valueStateText="{Worklist>/DateStateText}"/>
+        <DateRangeSelection id="idProjectDate" key="ProjectDate" width="230px" showCurrentDateButton="true" showFooter="true" enabled="false"/>
     </l:VerticalLayout>
+    <!-- <smartFilterBar:SmartFilterBar id="idSmartFilterBar" entitySet="YY1_ProjectEngageVH_API" 
+    advancedMode="false" useDateRangeType="false" useProvidedNavigationProperties="true" 
+    showClearOnFB="false" clear="onClearFilterBar" showRestoreButton="false" initialized=".onInitializedSmartFilterBar" 
+    showFilterConfiguration="false" search="onSearch">
+        <smartFilterBar:controlConfiguration>
+            <smartFilterBar:ControlConfiguration key="project" label="Project Name" index="0" groupId="_BASIC" preventInitialDataFetchInValueHelpDialog="true">
+                <smartFilterBar:customControl>
+                    <MultiInput id="idProject" name="Project" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onValueHelpRequested" showClearIcon="true" maxTokens="10"/>
+                    <MultiComboBox selectionChange="handleSelectionChange" selectionFinish="handleSelectionFinish" width="500px" 
+                    items="{ path: 'YY1_PROJECTENGAGEVH_API_CDS>/YY1_ProjectEngageVH_API'}">
+                        <core:Item key="{YY1_PROJECTENGAGEVH_API_CDS>EngmntProjNameUprCase}" text="{YY1_PROJECTENGAGEVH_API_CDS>EngagementProject}"/>
+                    </MultiComboBox>
+
+                </smartFilterBar:customControl>
+            </smartFilterBar:ControlConfiguration>
+            <smartFilterBar:ControlConfiguration key="ProjectDate" label="Project Date" index="1" groupId="_BASIC">
+                <smartFilterBar:customControl>
+                    <DateRangeSelection id="idProjectDate" width="250px" showCurrentDateButton="true" showFooter="true" enabled="false"/>
+                </smartFilterBar:customControl>
+            </smartFilterBar:ControlConfiguration>
+        </smartFilterBar:controlConfiguration>
+        <smartFilterBar:layoutData>
+            <FlexItemData shrinkFactor="0"/>
+        </smartFilterBar:layoutData>
+    </smartFilterBar:SmartFilterBar> -->
 </mvc:View>

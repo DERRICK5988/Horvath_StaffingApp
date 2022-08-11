@@ -22,7 +22,7 @@ sap.ui.define([
              * @public
              */
             onInit: function () {
-                debugger;
+                
                 this.injectMembers();
                 // this.oComponent.oControllers.add("header", this);
                 // this.oHeaderModel = new r(this.oBundle);
@@ -93,21 +93,21 @@ sap.ui.define([
                 history.go(-1);
             },
             onSearch: function (oEvent) {
-                debugger;
+                
                 let oProjectDate = this.getView().byId("idProjectDate"),
                     oProject = this.getView().byId("idProject");
-                if (!oProjectDate.getValue()) {
-                    this.getModel("Worklist").setProperty("/DateState", "Error");
-                    this.getModel("Worklist").setProperty("/DateStateText", "Make sure project date is enter");
-                    return;
-                };
+                // if (!oProjectDate.getValue()) {
+                //     this.getModel("Worklist").setProperty("/DateState", "Error");
+                //     this.getModel("Worklist").setProperty("/DateStateText", "Make sure project date is enter");
+                //     return;
+                // };
                 // if (!oProject.getValue()) {
                 //     this.getModel("Worklist").setProperty("/ProjectState", "Error");
                 //     this.getModel("Worklist").setProperty("/ProjectStateText", "Make sure project is enter");
                 //     return;
                 // };
-                this.getModel("Worklist").setProperty("/ProjectState", "None");
-                this.getModel("Worklist").setProperty("/ProjectStateText", "");
+                // this.getModel("Worklist").setProperty("/ProjectState", "None");
+                // this.getModel("Worklist").setProperty("/ProjectStateText", "");
                 this.oControllers.table.updateColumns({
                     leadingColumns: !0,
                     timeColumns: true,

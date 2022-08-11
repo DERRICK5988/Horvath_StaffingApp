@@ -26,10 +26,18 @@ server:
       beforeMiddleware: csp
       configuration:
         service:
-          urlPath: /sap/opu/odata/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV
-          metadataXmlPath: ./webapp/localService/metadata.xml
-          mockdataRootPath: ./webapp/localService/data
-          generateMockData: true
+          - urlPath: /sap/opu/odata/sap/YY1_PROJECTENGAGEVH_API_CDS/
+            metadataXmlPath: ./webapp/localService/YY1_PROJECTENGAGEVH_API_CDS/metadata.xml
+            mockdataRootPath: ./webapp/localService/YY1_PROJECTENGAGEVH_API_CDS/mockdata
+            generateMockData: true
+          - urlPath: /sap/opu/odata/CPD/SC_PROJ_ENGMT_CREATE_UPD_SRV/
+            metadataXmlPath: ./webapp/localService/SC_PROJ_ENGMT_CREATE_UPD_SRV/metadata.xml
+            mockdataRootPath: ./webapp/localService/SC_PROJ_ENGMT_CREATE_UPD_SRV/mockdata
+            generateMockData: true
+          - urlPath: /sap/opu/odata/sap/YY1_PROJENGAGEMENT_SRV_CDS
+            metadataXmlPath: ./webapp/localService/YY1_PROJENGAGEMENT_SRV_CDS/metadata.xml
+            mockdataRootPath: ./webapp/localService/YY1_PROJENGAGEMENT_SRV_CDS/mockdata
+            generateMockData: true
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:

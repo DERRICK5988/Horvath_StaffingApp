@@ -6,14 +6,14 @@ sap.ui.define([
     "sap/base/util/deepClone",
     "horvath/staffingapp/controller/table/TableColumnFactory"
 ],
-    (function (t, a, e) {
+    (function (t, a, TableColumnFactory) {
         "use strict";
         return t.extend("horvath.staffingapp.controller.table.TableColumnUpdate", {
             constructor: function () {
                 t.apply(this, arguments);
                 this.injectMembers();
-                this.oTable = this.byId("tblCapacity");
-                this.oFactory = new e(this.oComponent);
+                this.oTable = this.byId("idTreeTable");
+                this.oFactory = new TableColumnFactory(this.oComponent);
             },
             update: function (t, i) {
                 this.oTable.destroyColumns();
@@ -31,7 +31,7 @@ sap.ui.define([
                         { id: "idContractType", columnKey: "ContractType", label: "Contract Type", visible: true, index: 7, width: "120px" }]
                 };
                 this._aColumns = [];
-                debugger;
+                
                 this._pushNameColumn(a);
                 // In case variant is implemented, then push this to variant
                 this._pushVariantColumns(a);
@@ -61,7 +61,7 @@ sap.ui.define([
                 //         return t.index - i.index
                 //     }
                 //     )),
-                debugger;
+                
                 for (let index in t.columns) {
                     this._aColumns.push(this.oFactory.createColumn(t.columns[index]));
                 }

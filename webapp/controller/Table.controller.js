@@ -26,8 +26,9 @@ sap.ui.define([
     "./table/TimeColumnsMap",
     // "capacityGridUi/capacityGridUi/view/Views", 
     "sap/m/MessageToast",
-    "sap/m/MessageBox"],
-    (function (BaseController, TableColumnUpdate, TimeColumnsMap, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/model/json/JSONModel"],
+    (function (BaseController, TableColumnUpdate, TimeColumnsMap, MessageToast, MessageBox, JSONModel) {
         "use strict";
         return BaseController.extend("horvath.staffingapp.controller.Table", {
             oTable: null,
@@ -41,9 +42,11 @@ sap.ui.define([
                 debugger;
                 this.injectMembers();
                 this.oComponent.oControllers.add("table", this);
-                this.oTable = this.byId("tblCapacity");
+                this.getView().setModel(new JSONModel(this.oComponent.oControllers.table.models.table.getData()), "table");
+                this.oTable = this.byId("idTreeTable");
                 // this.oTable.setModel(this.models.table);
-                this.oTable.setModel(this.getOwnerComponent().getModel());
+                this.oTable.setModel(this.oComponent.getModel());
+
                 // this.oTable.bindRows({
                 //     path: "/WorkPackageSet",
                 //     parameters: {
@@ -77,35 +80,55 @@ sap.ui.define([
             //         this.oPersoDialogController.destroy();
             // },
             updateColumns: function (e) {
-                let t = this.models.app.getProperty("/selectedView");
-                // Check the project date first
-                // preMth = new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                // pMth = new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                // nMth = new Date(pMth.setMonth(pMth.getMonth() + 4));
+
+                let t = this.models.app.getProperty("/selectedView"),
+                    oHdr = this.oComponent.oControllers.header,
+                    oHdrView = oHdr.getView();
 
                 // Set Logic manually on month
-                if (e.timeColumns && e.oWorkListView) {
-                    let oProjectDate = e.oWorkListView.byId("idProjectDate"),
-                        dSDate = oProjectDate.getProperty("dateValue"),
-                        dEDate = oProjectDate.getProperty("secondDateValue");
-                    this.oTimeColumnsMap = new TimeColumnsMap(this.oBundle, t, dSDate, dEDate);
-                    this.oTable.bindRows({
-                        path: "/WorkPackageSet",
-                        parameters: {
-                            arrayNames: ["WorkPackageSet"],
-                            // numberOfExpandedLevels: 1
-                            countMode: "Inline",
-                            operationMode: "Server",
-                            // treeAnnotationProperties: {
-                            //     hierarchyLevelFor: "0",
-                            //     hierarchyNodeFor: "WorkPackageID",
-                            //     hierarchyParentNodeFor: "WorkPackageID",
-                            //     hierarchyDrillStateFor: "expanded"
-                            // }
-                        }
-                    });
-                }
-                // this.oTableColumnUpdate.update(t, this.oTimeColumnsMap);
+                let oProjectDate = oHdrView.byId("idProjectDate"),
+                    dSDate = oProjectDate.getProperty("dateValue"),
+                    dEDate = oProjectDate.getProperty("secondDateValue");
+                this.oTimeColumnsMap = new TimeColumnsMap(this.oBundle, t, dSDate, dEDate);
+                // Check search is clicked
+                // this.oTable.bindRows({
+                //     path: "/WorkPackageSet",
+                //     parameters: {
+                //         arrayNames: ["WorkPackageSet"],
+                //         // numberOfExpandedLevels: 1
+                //         countMode: "Inline",
+                //         operationMode: "Server",
+                //         // treeAnnotationProperties: {
+                //         //     hierarchyLevelFor: "0",
+                //         //     hierarchyNodeFor: "WorkPackageID",
+                //         //     hierarchyParentNodeFor: "WorkPackageID",
+                //         //     hierarchyDrillStateFor: "expanded"
+                //         // }
+                //     }
+                // });
+
+                // if (e.timeColumns && oHdrView) {
+                //     let oProjectDate = e.oWorkListView.byId("idProjectDate"),
+                //         dSDate = oProjectDate.getProperty("dateValue"),
+                //         dEDate = oProjectDate.getProperty("secondDateValue");
+                //     this.oTimeColumnsMap = new TimeColumnsMap(this.oBundle, t, dSDate, dEDate);
+                //     // this.oTable.bindRows({
+                //     //     path: "/WorkPackageSet",
+                //     //     parameters: {
+                //     //         arrayNames: ["WorkPackageSet"],
+                //     //         // numberOfExpandedLevels: 1
+                //     //         countMode: "Inline",
+                //     //         operationMode: "Server",
+                //     //         // treeAnnotationProperties: {
+                //     //         //     hierarchyLevelFor: "0",
+                //     //         //     hierarchyNodeFor: "WorkPackageID",
+                //     //         //     hierarchyParentNodeFor: "WorkPackageID",
+                //     //         //     hierarchyDrillStateFor: "expanded"
+                //     //         // }
+                //     //     }
+                //     // });
+                // }
+                this.oTableColumnUpdate.update(t, this.oTimeColumnsMap);
             },
             // fetchData: function (e) {
             //     this.oTableFetch.fetchData(e.reset, this.oTimeColumnsMap)
@@ -197,9 +220,16 @@ sap.ui.define([
             // onToggleFilter: function (e) {
             //     this.oControllers.page.toggleFilter()
             // },
-            // onEdit: function (e) {
-            //     this.oControllers.page.toggleEditMode()
-            // },
+            onEdit: function (oEvent) {
+                // this.oComponent.oControllers.page.toggleEditMode();
+                this.getView().getModel("table").setProperty("/btnVisible", false);
+            },
+            onSave: function(oEvent) {
+                this.getView().getModel("table").setProperty("/btnVisible", true);
+            },
+            onCancel: function(oEvent) {
+                this.getView().getModel("table").setProperty("/btnVisible", true);
+            }
             // showRow: function (e) {
             //     this.oTableShowRow.showRow(e)
             // },
@@ -259,6 +289,6 @@ sap.ui.define([
             // onCloseFilterBar: function () {
             //     this.byId("idFilterToggleButton").focus()
             // }
-        })
+        });
     }
     ));

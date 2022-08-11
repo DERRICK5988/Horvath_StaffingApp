@@ -1,30 +1,47 @@
-<mvc:View controllerName="horvath.staffingapp.controller.Table" 
-    height="100%"
+<mvc:View controllerName="horvath.staffingapp.controller.Table" height="100%"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:sv="sap.ui.comp.smartvariants"
     xmlns:t="sap.ui.table">
-     <t:TreeTable id="tblCapacity" firstVisibleRowChanged="onScroll" rowSelectionChange="onRowSelectionChange" rowsUpdated="onRowsUpdated" columnResize="onColumnResize" toggleOpenState="onExpandRow" 
-    sort="onSort" rootLevel="0" busy="{/busy}" busyIndicatorDelay="{app>/busyIndicatorDelay}" 
-    selectionMode="{= ${app>/IsEditMode} ? 'MultiToggle' : 'None' }" showNoData="true" fixedColumnCount="9" 
-    minAutoRowCount="5" visibleRowCountMode="Auto" rowHeight="30px" enableColumnReordering="false" 
-    showOverlay="{= ${app>/IsFilterChanged} &amp;&amp; ${app>/IsFilterBarOpen}}">
-        <t:rowSettingsTemplate>
-            <t:RowSettings highlight="{rowHighlight}"/>
-        </t:rowSettingsTemplate>
-        <t:extension>
-            <!-- <OverflowToolbar id="idCapacityToolbar" height="auto"> -->
-                <!-- <Title id='idGridTitle\' text="{ path : \'/resourcesCount\', formatter: \'.formatTitle\' }"/>
-				<Button id="idFilterToggleButton" icon="sap-icon://filter" tooltip="{i18n>TOGGLE_FILTER_TOOLTIP}" press="onToggleFilter" type="Transparent" enabled="{app>/IsDisplayMode}"/>
-				<ToolbarSpacer/>
-				<Button id="idBtnSaveSelect" text="{i18n>SAVE_SEL}" visible="{app>/IsEditMode}" enabled="{/rowsSelected}" press="onSaveSelected" type="Transparent"/>
-				<Button id="idBtnRevert" text="{i18n>REVERT_EDITED_CELLS}" visible="{app>/IsEditMode}" enabled="{/rowsSelected}" press="onRevertSelected" type="Transparent"/>
-				<Button id="idBtnEdit" text="{i18n>EDIT_ASSIGNMENTS_BUTTON}" visible="{app>/IsDisplayMode}" enabled="{= ${/resourcesCount} > 0}" press="onEdit" type="Emphasized"/>
-				<Button id="idBtnPersonalization" icon="sap-icon://action-settings" press="onOpenPersoDialog" type="Transparent"/>
-				<Button id="idBtnExcel" icon="sap-icon://excel-attachment" tooltip="{i18n>EXPORT_TO_SPREADSHEET}" type="Transparent" press="onExportToExcel"/> -->
-            <!-- </OverflowToolbar> -->
-            <!-- <OverflowToolbar id="idInfoToolbar" active="true" visible="{= ${app>/InfoBarFilterCount} > 0 &amp;&amp; !${app>/IsFilterBarOpen}}" design="Info" press="onInfoBar"> -->
-                <!-- <Text id="idFilterInfoText" text="{parts: [\'app>/InfoBarFilterCount\', \'app>/InfoBarItems\'],formatter: \'.formatInfoBarText\'}"/> -->
-            <!-- </OverflowToolbar> -->
-        </t:extension>
-    </t:TreeTable>
+    <VBox fitContainer="true">
+        <!-- showRowCount should be set to false as the correct count cannot be
+			determined for tree table scenario -->
+        <smartTable:SmartTable id="idSmartTreeTable" entitySet="" tableType="TreeTable" useExportToExcel="false" 
+        useVariantManagement="false" useTablePersonalisation="true" header="Hierarchy" showRowCount="false" 
+        enableAutoBinding="true" beforeRebindTable="onBeforeRebindTable" persistencyKey="SmartTablePersistencyKey" 
+        enableAutoColumnWidth="true">
+            <!-- layout data used to make the table growing but the filter bar fixed -->
+            <smartTable:layoutData>
+                <FlexItemData growFactor="1" />
+            </smartTable:layoutData>
+            <t:TreeTable id="idTreeTable" firstVisibleRowChanged="onScroll" rowSelectionChange="onRowSelectionChange" 
+            rowsUpdated="onRowsUpdated" columnResize="onColumnResize" toggleOpenState="onExpandRow" sort="onSort" 
+            rootLevel="0" busy="{/busy}" busyIndicatorDelay="{app>/busyIndicatorDelay}" 
+            selectionMode="{= ${app>/IsEditMode} ? 'MultiToggle' : 'None' }" showNoData="true" 
+            fixedColumnCount="9" minAutoRowCount="5" visibleRowCountMode="Auto" rowHeight="30px" 
+            enableColumnReordering="false" showOverlay="{= ${app>/IsFilterChanged} &amp;&amp; ${app>/IsFilterBarOpen}}">
+                <t:rowSettingsTemplate>
+                    <t:RowSettings highlight="{rowHighlight}"/>
+                </t:rowSettingsTemplate>
+                <t:extension>
+                    <OverflowToolbar id="idCapacityToolbar" height="auto">
+                        <!-- <Title id='idGridTitle\' text="{ path : \'/resourcesCount\', formatter: \'.formatTitle\' }"/> -->
+                        <Title text="Project"/>
+                        <!-- <Button id="idFilterToggleButton" icon="sap-icon://filter" tooltip="{i18n>TOGGLE_FILTER_TOOLTIP}" press="onToggleFilter" type="Transparent" enabled="{app>/IsDisplayMode}"/> -->
+                        <ToolbarSpacer/>
+                        <!-- <Button id="idBtnSaveSelect" text="{i18n>SAVE_SEL}" visible="{app>/IsEditMode}" enabled="{/rowsSelected}" press="onSaveSelected" type="Transparent"/> -->
+                        <!-- <Button id="idBtnEdit" text="{i18n>EDIT_ASSIGNMENTS_BUTTON}" visible="{app>/IsDisplayMode}" enabled="{= ${/resourcesCount} > 0}" press="onEdit" type="Emphasized"/> -->
+                        <Button id="idBtnEdit" icon="sap-icon://edit" tooltip="Edit" press="onEdit" visible="{= ${table>/btnVisible}}" type="Default"/>
+                        <Button id="idBtnSave" icon="sap-icon://save" tooltip="Save" press="onSave" visible="{= !${table>/btnVisible}}" type="Default"/>
+                        <Button id="idBtnCancel" icon="sap-icon://cancel" tooltip="Cancel" press="onCancel" visible="{= !${table>/btnVisible}}" type="Default"/>
+                    </OverflowToolbar>
+                    <!-- <OverflowToolbar id="idInfoToolbar" active="true" visible="{= ${app>/InfoBarFilterCount} > 0 &amp;&amp; !${app>/IsFilterBarOpen}}" design="Info" press="onInfoBar"> -->
+                    <!-- <Text id="idFilterInfoText" text="{parts: [\'app>/InfoBarFilterCount\', \'app>/InfoBarItems\'],formatter: \'.formatInfoBarText\'}"/> -->
+                    <!-- </OverflowToolbar> -->
+                </t:extension>
+            </t:TreeTable>
+        </smartTable:SmartTable>
+    </VBox>
 </mvc:View>
