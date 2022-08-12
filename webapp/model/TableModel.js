@@ -9,9 +9,10 @@ sap.ui.define([
             JSONModel.call(this, {
                 sortProperty: null,
                 sortOrder: null,
-                // resources: [],
-                // resourcesCount: 0,
+                resources: {},
+                resourcesCount: 0,
                 btnVisible: true,
+                isInputVisible: false,
                 rows: [],
                 rowsSelected: true,
                 columns: [],

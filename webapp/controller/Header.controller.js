@@ -22,6 +22,7 @@ sap.ui.define([
     return BaseViewController.extend("horvath.staffingapp.controller.Header", {
         // oDateRangePopoverController: void 0,
         onInit: function () {
+            
             let oProjectDate = this.getView().byId("idProjectDate"),
                 preMth = new Date(new Date().setMonth(new Date().getMonth() - 1)),
                 pMth = new Date(new Date().setMonth(new Date().getMonth() - 1)),
@@ -32,9 +33,16 @@ sap.ui.define([
             this.getView().setModel(this.oHeaderModel, "header");
             oProjectDate.setDateValue(preMth);
             oProjectDate.setSecondDateValue(nMth);
+            
+            //Tempopary
+            // this.getView().byId("idProject");
+            this.getView().byId("idProject").addToken(new Token({
+                key: "DE10SI21100023",
+                text: "One ERP"
+            }));
         },
         onValueHelpRequested: function (oEvent, skey) {
-            debugger;
+            
             var oValueHelpModel = this.oComponent.oControllers.header.oHeaderModel.ValueHelpconfig()[skey],
                 aCols = oValueHelpModel.aCols;
             this._oInput = oEvent.getSource();

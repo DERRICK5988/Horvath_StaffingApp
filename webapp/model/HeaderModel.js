@@ -14,6 +14,8 @@ sap.ui.define([
                 // totalResources: null,
                 // freeResources: null,
                 // overbookedResources: null,
+                ProjValueState: "None",
+                ProjValueStateText: "",
                 Views: [{
                     Key: Views.HOUR,
                     Text: t.getText("HOUR")

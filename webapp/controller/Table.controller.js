@@ -23,12 +23,14 @@ sap.ui.define([
     // "capacityGridUi/capacityGridUi/view/table/TableShowRow", 
     // "capacityGridUi/capacityGridUi/view/table/TableFetch", 
     "./table/TableColumnUpdate",
+    "./table/TableFetch",
     "./table/TimeColumnsMap",
     // "capacityGridUi/capacityGridUi/view/Views", 
     "sap/m/MessageToast",
     "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"],
-    (function (BaseController, TableColumnUpdate, TimeColumnsMap, MessageToast, MessageBox, JSONModel) {
+    "sap/ui/model/json/JSONModel"
+],
+    (function (BaseController, TableColumnUpdate, TableFetch, TimeColumnsMap, MessageToast, MessageBox, JSONModel) {
         "use strict";
         return BaseController.extend("horvath.staffingapp.controller.Table", {
             oTable: null,
@@ -39,7 +41,7 @@ sap.ui.define([
             oTableColumnUpdate: void 0,
             oTimeColumnsMap: void 0,
             onInit: function () {
-                debugger;
+
                 this.injectMembers();
                 this.oComponent.oControllers.add("table", this);
                 this.getView().setModel(new JSONModel(this.oComponent.oControllers.table.models.table.getData()), "table");
@@ -71,7 +73,7 @@ sap.ui.define([
                     leadingColumns: !0,
                     timeColumns: false
                 });
-                // this.oTableFetch = new s(this),
+                this.oTableFetch = new TableFetch(this);
                 // this.oTableExport = new i(this),
                 // this.oTableShowRow = new a(this)
             },
@@ -130,9 +132,9 @@ sap.ui.define([
                 // }
                 this.oTableColumnUpdate.update(t, this.oTimeColumnsMap);
             },
-            // fetchData: function (e) {
-            //     this.oTableFetch.fetchData(e.reset, this.oTimeColumnsMap)
-            // },
+            fetchData: function (e) {
+                this.oTableFetch.fetchData(e.reset, this.oTimeColumnsMap);
+            },
             // applyVariant: function (e) {
             //     this.models.table.setProperty("/sortOrder", e.sortOrder),
             //         this.models.table.setProperty("/sortProperty", e.sortProperty),
@@ -220,15 +222,33 @@ sap.ui.define([
             // onToggleFilter: function (e) {
             //     this.oControllers.page.toggleFilter()
             // },
+            handleEmployeeDetailPress: function (oEvent) {
+                debugger;
+                this.getOwnerComponent().getRouter().navTo("EmployeeDetail");
+            },
             onEdit: function (oEvent) {
+                debugger;
                 // this.oComponent.oControllers.page.toggleEditMode();
                 this.getView().getModel("table").setProperty("/btnVisible", false);
+                this.getView().getModel("table").setProperty("/isInputVisible", true);
+                this.getModel("table").setProperty("/isInputVisible", true);
+                this.getView().getModel("table").updateBindings(true);
+                this.getView().getModel("table").refresh(true);
+                this.getModel("table").refresh(true);
             },
-            onSave: function(oEvent) {
+            onSave: function (oEvent) {
                 this.getView().getModel("table").setProperty("/btnVisible", true);
+                this.getView().getModel("table").setProperty("/isInputVisible", false);
+                this.getModel("table").setProperty("/isInputVisible", false);
+                this.getView().getModel("table").updateBindings(true);
+                this.getView().getModel("table").refresh(true);
+                this.getModel("table").refresh(true);
             },
-            onCancel: function(oEvent) {
+            onCancel: function (oEvent) {
                 this.getView().getModel("table").setProperty("/btnVisible", true);
+                this.getView().getModel("table").setProperty("/isInputVisible", false);
+                this.getView().getModel("table").updateBindings();
+                this.getView().getModel("table").refresh();
             }
             // showRow: function (e) {
             //     this.oTableShowRow.showRow(e)

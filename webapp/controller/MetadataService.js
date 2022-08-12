@@ -18,7 +18,6 @@ sap.ui.define([
             // @ts-ignore
             this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
             this._oComponent = oComponent;
-            debugger;
             this._oModel = oComponent.getModel();
             // @ts-ignore
             this._oModel.metadataLoaded().then(this._onMetadataLoaded.bind(this));

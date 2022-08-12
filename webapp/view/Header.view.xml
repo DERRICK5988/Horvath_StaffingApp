@@ -40,12 +40,14 @@
 		</m:VBox>
 	</l:VerticalLayout> -->
     <l:VerticalLayout class="sapUiSmallMarginBeginEnd">
-        <Label id="idProjectLabel" text="{i18n>Project}"/>
-        <MultiInput id="idProject" key="Project" name="Project" width="230px" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onValueHelpRequested($event, 'Project')" showClearIcon="true" maxTokens="10"/>
+        <Label id="idProjectLabel" text="{i18n>Project}" required="true"/>
+        <MultiInput id="idProject" key="Project" name="Project" width="230px" showValueHelp="true" valueHelpOnly="true"
+        valueHelpRequest="onValueHelpRequested($event, 'Project')" valueState="{header>/ProjValueState}" valueStateText="{header>/ProjValueStateText}"
+        showClearIcon="true" maxTokens="10"/>
     </l:VerticalLayout>
     <l:VerticalLayout class="sapUiSmallMarginBeginEnd">
         <Label text="Project Date" labelFor="dateRangeInput"/>
-        <DateRangeSelection id="idProjectDate" key="ProjectDate" width="230px" showCurrentDateButton="true" showFooter="true" enabled="false"/>
+        <DateRangeSelection id="idProjectDate" key="ProjectDate" width="200px" displayFormat="MMM, yyyy" showCurrentDateButton="true" showFooter="true" enabled="false"/>
     </l:VerticalLayout>
     <!-- <smartFilterBar:SmartFilterBar id="idSmartFilterBar" entitySet="YY1_ProjectEngageVH_API" 
     advancedMode="false" useDateRangeType="false" useProvidedNavigationProperties="true" 

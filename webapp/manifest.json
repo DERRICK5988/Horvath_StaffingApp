@@ -129,6 +129,13 @@
                     "target": [
                         "object"
                     ]
+                },
+                {
+                    "name": "EmployeeDetail",
+                    "pattern": "EmployeeDetail",
+                    "target": [
+                        "EmployeeDetail"
+                    ]
                 }
             ],
             "targets": {
@@ -137,6 +144,12 @@
                     "viewId": "worklist",
                     "viewLevel": 1,
                     "title": "{i18n>worklistViewTitle}"
+                },
+                "EmployeeDetail": {
+                    "viewType": "XML",
+                    "viewId": "EmployeeDetail",
+                    "viewName": "EmployeeDetail",
+                    "title": "Employee Detail"
                 },
                 "object": {
                     "viewName": "Object",
