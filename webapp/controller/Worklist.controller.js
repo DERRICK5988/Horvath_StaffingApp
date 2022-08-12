@@ -22,8 +22,8 @@ sap.ui.define([
              * @public
              */
             onInit: function () {
-                
-                this.injectMembers();
+
+                // this.injectMembers();
                 // this.oComponent.oControllers.add("header", this);
                 // this.oHeaderModel = new r(this.oBundle);
                 // this.getView().setModel(this.oHeaderModel, "header");
@@ -93,25 +93,21 @@ sap.ui.define([
                 history.go(-1);
             },
             onSearch: function (oEvent) {
+                let oComponent = this.getOwnerComponent(),
+                    oModels = oComponent.models,
+                    oControllers = oComponent.oControllers,
+                    oHdrView = oControllers.header.getView();
+
+                if (oHdrView.byId("idProject").getTokens().length === 0) {
+                    oHdrView.getModel("header").setProperty("/ProjValueState", "Error");
+                    oHdrView.getModel("header").setProperty("/ProjValueStateText", "Make sure project is enter");
+                    return;
+                }
+                oHdrView.getModel("header").setProperty("/ProjValueState", "None");
+                oHdrView.getModel("header").setProperty("/ProjValueStateText", "");
                 
-                let oProjectDate = this.getView().byId("idProjectDate"),
-                    oProject = this.getView().byId("idProject");
-                // if (!oProjectDate.getValue()) {
-                //     this.getModel("Worklist").setProperty("/DateState", "Error");
-                //     this.getModel("Worklist").setProperty("/DateStateText", "Make sure project date is enter");
-                //     return;
-                // };
-                // if (!oProject.getValue()) {
-                //     this.getModel("Worklist").setProperty("/ProjectState", "Error");
-                //     this.getModel("Worklist").setProperty("/ProjectStateText", "Make sure project is enter");
-                //     return;
-                // };
-                // this.getModel("Worklist").setProperty("/ProjectState", "None");
-                // this.getModel("Worklist").setProperty("/ProjectStateText", "");
-                this.oControllers.table.updateColumns({
-                    leadingColumns: !0,
-                    timeColumns: true,
-                    oWorkListView: this.getView()
+                oControllers.table.fetchData({
+                    reset: !0
                 });
             },
 

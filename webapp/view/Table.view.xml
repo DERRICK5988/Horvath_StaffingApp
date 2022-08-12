@@ -18,7 +18,7 @@
             </smartTable:layoutData>
             <t:TreeTable id="idTreeTable" firstVisibleRowChanged="onScroll" rowSelectionChange="onRowSelectionChange" 
             rowsUpdated="onRowsUpdated" columnResize="onColumnResize" toggleOpenState="onExpandRow" sort="onSort" 
-            rootLevel="0" busy="{/busy}" busyIndicatorDelay="{app>/busyIndicatorDelay}" 
+            rootLevel="0" busy="{table>/busy}" busyIndicatorDelay="{app>/busyIndicatorDelay}" 
             selectionMode="{= ${app>/IsEditMode} ? 'MultiToggle' : 'None' }" showNoData="true" 
             fixedColumnCount="9" minAutoRowCount="5" visibleRowCountMode="Auto" rowHeight="30px" 
             enableColumnReordering="false" showOverlay="{= ${app>/IsFilterChanged} &amp;&amp; ${app>/IsFilterBarOpen}}">
@@ -28,7 +28,8 @@
                 <t:extension>
                     <OverflowToolbar id="idCapacityToolbar" height="auto">
                         <!-- <Title id='idGridTitle\' text="{ path : \'/resourcesCount\', formatter: \'.formatTitle\' }"/> -->
-                        <Title text="Project"/>
+                        <!-- <Title text="Resource ({path: '${/resourcesCount}'})"/> -->
+                        <Title text="Resource"/>
                         <!-- <Button id="idFilterToggleButton" icon="sap-icon://filter" tooltip="{i18n>TOGGLE_FILTER_TOOLTIP}" press="onToggleFilter" type="Transparent" enabled="{app>/IsDisplayMode}"/> -->
                         <ToolbarSpacer/>
                         <!-- <Button id="idBtnSaveSelect" text="{i18n>SAVE_SEL}" visible="{app>/IsEditMode}" enabled="{/rowsSelected}" press="onSaveSelected" type="Transparent"/> -->

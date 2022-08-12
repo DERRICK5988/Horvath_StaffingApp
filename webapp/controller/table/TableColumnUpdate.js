@@ -19,19 +19,20 @@ sap.ui.define([
                 this.oTable.destroyColumns();
                 // Not implement yet, so hardcore columns for now
                 // let a = this.oControllers.variant.getVariant();
+                debugger;
                 let a = {
                     columns: [
-                        { id: "idTimeRecording", columnKey: "timeRecording", label: "Time Recordings", index: 0, visible: true, width: "200px" },
-                        { id: "idStaffed", columnKey: "Staffed", label: "Staffed", visible: false, index: 1, width: "150px" },
-                        { id: "idUnassignedCapacity", columnKey: "UnassignedCapacity", label: "Unassigned Capacity", visible: true, index: 2, width: "120px" },
-                        { id: "idStaffedNew", columnKey: "StaffedNew", label: "Staffed New", visible: true, index: 3, width: "120px" },
-                        { id: "idBaseLine", columnKey: "BaseLine", label: "Base Line", visible: true, index: 4, width: "120px" },
-                        { id: "idWriteOffs", columnKey: "WriteOffs", label: "Write Offs", visible: true, index: 5, width: "120px" },
-                        { id: "idPostponed", columnKey: "Postponed", label: "Postponed", visible: true, index: 6, width: "120px" },
-                        { id: "idContractType", columnKey: "ContractType", label: "Contract Type", visible: true, index: 7, width: "120px" }]
+                        { id: "idTimeRecording", columnKey: "timeRecording", label: "Time Recordings", bindElement: "", index: 0, visible: true, width: "200px" },
+                        { id: "idStaffed", columnKey: "Staffed", label: "Staffed", bindElement: "{table>Staffed}", visible: true, index: 1, width: "150px" },
+                        { id: "idUnassignedCapacity", columnKey: "UnassignedCapacity", label: "Unassigned Capacity", bindElement: "", visible: true, index: 2, width: "120px" },
+                        { id: "idStaffedNew", columnKey: "StaffedNew", label: "Staffed New", bindElement: "", visible: true, index: 3, width: "120px" },
+                        { id: "idBaseLine", columnKey: "BaseLine", label: "Base Line", bindElement: "", visible: true, index: 4, width: "120px" },
+                        { id: "idWriteOffs", columnKey: "WriteOffs", label: "Write Offs", bindElement: "", visible: true, index: 5, width: "120px" },
+                        { id: "idPostponed", columnKey: "Postponed", label: "Postponed", bindElement: "", visible: true, index: 6, width: "120px" },
+                        { id: "idContractType", columnKey: "ContractType", label: "Contract Type", bindElement: "", visible: true, index: 7, width: "120px" }]
                 };
                 this._aColumns = [];
-                
+
                 this._pushNameColumn(a);
                 // In case variant is implemented, then push this to variant
                 this._pushVariantColumns(a);
@@ -61,27 +62,49 @@ sap.ui.define([
                 //         return t.index - i.index
                 //     }
                 //     )),
-                
+                debugger;
                 for (let index in t.columns) {
-                    this._aColumns.push(this.oFactory.createColumn(t.columns[index]));
+                    var oColumn = t.columns[index];
+                    switch (oColumn.columnKey) {
+                        case "StaffedNew":
+                            this._aColumns.push(this.oFactory.createStaffedNewColumn(oColumn));
+                            break;
+                        default:
+                            // this._aColumns.push(this.oFactory.createColumn(t.columns[index]));
+                            this._aColumns.push(this.oFactory.createColumn(oColumn));
+                            break;
+                    }
                 }
+                // for (let index in t.columns) {
+                //     this._aColumns.push(this.oFactory.createColumn(t.columns[index]));
+                // }
+                debugger;
                 // i.forEach((t => {
                 //     switch (t.columnKey) {
-                //         case "costCenter":
-                //             this._aColumns.push(this.oFactory.createCostCenterColumn(t.visible, t.width));
-                //             break;
-                //         case "staffingHrs":
-                //             this._aColumns.push(this.oFactory.createStaffingHoursColumn(t.visible, t.width));
-                //             break;
-                //         case "staffingSummary":
-                //             this._aColumns.push(this.oFactory.createStaffingSummaryColumn(t.visible, t.width));
-                //             break;
-                //         case "deliveryOrg":
-                //             this._aColumns.push(this.oFactory.createDeliveryOrgColumn(t.visible, t.width));
-                //             break;
-                //         case "assignmentStatus":
-                //             this._aColumns.push(this.oFactory.createAssignmentStatusColumn(t.visible, t.width));
-                //             break;
+                // case "timeRecording":
+                //     this._aColumns.push(this.oFactory.createTimeRecordColumn(t));
+                //     break;
+                // case "Staffed":
+                //     this._aColumns.push(this.oFactory.createStaffedColumn(t));
+                //     break;
+                // case "UnassignedCapacity":
+                //     this._aColumns.push(this.oFactory.createUnassignedCapacityColumn(t));
+                //     break;
+                // case "StaffedNew":
+                //     this._aColumns.push(this.oFactory.createStaffedNewColumn(t));
+                //     break;
+                // case "BaseLine":
+                //     this._aColumns.push(this.oFactory.createBaseLineColumn(t));
+                //     break;
+                // case "WriteOffs":
+                //     this._aColumns.push(this.oFactory.createWriteOffsColumn(t));
+                //     break;
+                // case "Postponed":
+                //     this._aColumns.push(this.oFactory.createPostponedColumn(t));
+                //     break;
+                // case "ContractType":
+                //     this._aColumns.push(this.oFactory.createContractTypeColumn(t));
+                //     break;
                 //         default:
                 //             throw new Error("unknown column key: " + t.columnKey);
                 //     }
@@ -89,6 +112,7 @@ sap.ui.define([
                 // ));
             },
             _pushTimeColumns: function (t, a) {
+                debugger;
                 let e = 0;
                 a.forEach(((a, n) => {
                     let s = "110px",

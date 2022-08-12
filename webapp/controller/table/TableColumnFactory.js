@@ -17,7 +17,7 @@ sap.ui.define([
     "sap/ui/layout/HorizontalLayout",
     "sap/ui/table/Column"
 ],
-    (function (BaseComponentController, ObjectStatus, a, HBox, n, Label, Text, s, u, p, m, c, d, h, f) {
+    (function (BaseComponentController, ObjectStatus, ObjectAttribute, HBox, Link, Label, Text, Input, Avatar, p, m, c, VerticalLayout, h, f) {
         "use strict";
         return BaseComponentController.extend("horvath.staffingapp.controller.table.TableColumnFactory", {
             constructor: function () {
@@ -26,7 +26,8 @@ sap.ui.define([
             },
             createNameColumn: function (t) {
                 return this._createColumn({
-                    template: this.createTemplate("{WorkPackageName} ({WorkPackageID})"),
+                    // template: this.createTemplate("{table>Name}"),
+                    template: this.createNameTemplate(),
                     id: "idNameLabel",
                     label: "Name",
                     sortProperty: "",
@@ -36,36 +37,51 @@ sap.ui.define([
                 });
             },
             createNameTemplate: function () {
-                return new HBox({
-                    alignItems: "Center",
-                    width: "300px",
-                    items: [new u({
-                        visible: true,
-                        initials: {
-                            path: "{WorkPackageID}",
-                            // formatter: this.formatNameInitials
-                        },
-                        displaySize: "XS"
-                    }), new n({
-                        visible: "{parent}",
-                        text: "{WorkPackageID}",
-                        tooltip: "{WorkPackageID}",
-                        textAlign: "Begin",
-                        // press: this.oControllers.table.handleEmployeeQuickViewPress.bind(this.oControllers.table)
-                    }).addStyleClass("sapUiTinyMarginBegin"),
-                    new n({
-                        text: "{WorkPackageName}",
-                        tooltip: "{WorkPackageName}",
-                        visible: "{child}",
-                        textAlign: "Begin",
-                        // press: this.oControllers.table.handleAssignmentQuickViewPress.bind(this.oControllers.table)
-
-                    })]
+                return new VerticalLayout({
+                    content: [
+                        new Link({
+                            visible: "{table>Employee}",
+                            text: "{table>Name}",
+                            // tooltip: "{table>resource/Name}",
+                            textAlign: "Begin",
+                            // press: this.oControllers.table.handleEmployeeDetailPress.bind(this.oControllers.table)
+                            press: this.oControllers.table.handleEmployeeDetailPress.bind(this)
+                        }).addStyleClass("sapUiTinyMarginBegin"),
+                        new Text({
+                            text: "{table>Name}",
+                            visible: "{table>Parent}"
+                        })]
                 });
+                // return new HBox({
+                //     alignItems: "Center",
+                //     width: "300px",
+                //     items: [new Avatar({
+                //         visible: true,
+                //         initials: {
+                //             path: "{table>resource/Name}",
+                //             // formatter: this.formatNameInitials
+                //         },
+                //         displaySize: "XS"
+                //     }), new Link({
+                //         // visible: "{parent}",
+                //         text: "{table>resource/Name}",
+                //         tooltip: "{table>resource/Name}",
+                //         textAlign: "Begin",
+                //         // press: this.oControllers.table.handleEmployeeQuickViewPress.bind(this.oControllers.table)
+                //     }).addStyleClass("sapUiTinyMarginBegin"),
+                //     new Link({
+                //         text: "{table>resource/Name}",
+                //         tooltip: "{table>resource/Name}",
+                //         // visible: "{child}",
+                //         textAlign: "Begin",
+                //         // press: this.oControllers.table.handleAssignmentQuickViewPress.bind(this.oControllers.table)
+
+                //     })]
+                // });
             },
-            createColumn: function (oCol) {
+            createStaffedNewColumn: function (oCol) {
                 return this._createColumn({
-                    template: this.createTemplate(),
+                    template: this.createStaffedNewTemplate(oCol),
                     id: oCol.id,
                     label: oCol.label,
                     sortProperty: "",
@@ -74,14 +90,68 @@ sap.ui.define([
                     hAlign: "Left"
                 });
             },
-            createTemplate: function (oBind) {
+            createStaffedNewTemplate: function (oCol) {
+                return new HBox({
+                    alignItems: "Center",
+                    items: [
+                        new Text({
+                            text: oCol.bindElement,
+                            tooltip: "",
+                            maxLines: 2,
+                            visible: "{= !${table>inputVisible}}"
+                        }),
+                        new Input({
+                            // value: "",
+                            visible: "{table>inputVisible}",
+                            type: "Number",
+                            description: "",
+                            width: "100%",
+                            fieldWidth: "60%",
+                            autocomplete: !1,
+                            // change: this.oControllers.page.onInputChanged.bind(this.oControllers.page),
+                            // valueState: "{utilizationValueState}",
+                            // valueStateText: "{utilizationValueStateText}"
+                        })
+                    ]
+                });
+            },
+            createColumn: function (oCol) {
+                return this._createColumn({
+                    template: this.createTemplate(oCol),
+                    id: oCol.id,
+                    label: oCol.label,
+                    sortProperty: "",
+                    visible: oCol.visible,
+                    width: oCol.width,
+                    hAlign: "Left"
+                });
+            },
+            createTemplate: function (oCol) {
                 // Bind later
                 return new Text({
-                    text: oBind,
+                    text: oCol.bindElement,
                     tooltip: "",
                     maxLines: 2
                 });
             },
+            // createStaffedColumn: function (t) {
+            //     return this._createColumn({
+            //         template: this.createStaffedTemplate(),
+            //         id: "idDeliveryOrgLabel",
+            //         label: this.oBundle.getText("DELIVERY_ORGANIZATION"),
+            //         sortProperty: "deliveryOrgForDisplay",
+            //         visible: t,
+            //         width: e,
+            //         hAlign: "Left"
+            //     });
+            // },
+            // createStaffedTemplate: function () {
+            //     return new Text({
+            //         text: "{deliveryOrg}",
+            //         tooltip: "{deliveryOrg}",
+            //         maxLines: 2
+            //     });
+            // }
             // createDeliveryOrgColumn: function (t, e) {
             //     return this._createColumn({
             //         template: this.createDeliveryOrgTemplate(),
@@ -155,7 +225,7 @@ sap.ui.define([
             //     })
             // },
             // createStaffingHoursTemplate: function () {
-            //     return new d({
+            //     return new VerticalLayout({
             //         content: [new ObjectStatus({
             //             text: "{avgUtilGrid} %",
             //             inverted: !0,
@@ -226,7 +296,7 @@ sap.ui.define([
                 });
             },
             createTimeTemplate: function (t) {
-                // let a = new d({
+                // let a = new VerticalLayout({
                 //     content: [new ObjectStatus({
                 //         text: "{colUtil} {i18n>PERCENTAGE}",
                 //         visible: "{parent}",
@@ -245,7 +315,7 @@ sap.ui.define([
                 //             parts: ["child", "app>/IsDisplayMode"],
                 //             formatter: this.formatTextVisible
                 //         }
-                //     }), new s({
+                //     }), new Input({
                 //         value: "{asgUtil}",
                 //         visible: {
                 //             parts: ["child", "app>/IsEditMode"],
@@ -268,26 +338,17 @@ sap.ui.define([
                 // });
                 // return a.bindContext("utilization/" + t),
                 // a
-
-                let a = new d({
-                    content: [new ObjectStatus({
-                        text: "{colUtil} {i18n>PERCENTAGE}",
+                // var sMonth = "{table>Month", t, ].join("")
+                debugger;
+                var sMonth = "{table>Month" + t + "}";
+                let a = new VerticalLayout({
+                    content: [new Text({
+                        text: "{table>Month0} {i18n>HOUR}",
                         visible: true,
-                        state: {
-                            path: "colUtil",
-                            // formatter: e
-                        }
-                    }), new Text({
-                        text: "{freeHours} / {availableHours} {i18n>HOUR}",
-                        visible: true,
-                        tooltip: "{freeHours} / {availableHours} {i18n>HOUR}",
-                        wrapping: !1
-                    }), new Text({
-                        text: "{asgUtil} {i18n>HOUR}",
-                        visible: true
-                    }), new s({
+                        wrapping: true
+                    }), new Input({
                         value: "{asgUtil}",
-                        visible: true,
+                        visible: false,
                         type: "Number",
                         description: "{i18n>HOUR}",
                         width: "100%",
@@ -299,7 +360,7 @@ sap.ui.define([
                         // valueStateText: "{utilizationValueStateText}"
                     }).addEventDelegate({
                         onfocusin: function (t) {
-                            t.currentTarget.getElementsByTagName("input")[0].select()
+                            t.currentTarget.getElementsByTagName("input")[0].select();
                         }
                     })]
                 });
@@ -307,7 +368,7 @@ sap.ui.define([
                 return a.bindContext("" + t);
             },
             _createColumn: function (t) {
-                
+
                 return new f({
                     label: new Label({
                         text: t.label,
